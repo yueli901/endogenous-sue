@@ -1,0 +1,42 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The oldest supported interpreter and a current one. numba is installed on neither: every
+        # compiled kernel has a pure-Python counterpart with identical semantics, and this is what
+        # checks that claim rather than trusting it.
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check src reproduction tests
+      - name: Test
+        # The networks are not fetched here. Tests that need them skip with a message saying so; the
+        # tests that use the built-in witness network still run.
+        run: python tests/run_tests.py
+
+  results:
+    # The stored results are part of the artifact, so the gate that reads them runs in CI too.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python reproduction/tools/validate_results.py --strict

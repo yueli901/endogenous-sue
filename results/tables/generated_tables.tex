@@ -1,0 +1,216 @@
+
+corpus
+====================================================================================================
+Braess example                   & 4 & 2 & 5 & diagnostic \\
+Sioux Falls                      & 24 & 24 & 76 & certificate \\
+Eastern Massachusetts            & 74 & 74 & 258 & certificate \\
+Berlin-Friedrichshain            & 224 & 23 & 523 & certificate \\
+Berlin-Prenzlauerberg-Center     & 352 & 38 & 749 & certificate \\
+Berlin-Tiergarten                & 361 & 26 & 766 & certificate \\
+Berlin-Mitte-Center              & 398 & 36 & 871 & certificate \\
+Anaheim                          & 416 & 38 & 914 & certificate \\
+Berlin-M.-P.-F.-Center           & 975 & 98 & 2184 & diagnostic \\
+Winnipeg-Asymmetric              & 1057 & 154 & 2535 & diagnostic \\
+Chicago-Sketch                   & 933 & 387 & 2950 & certificate \\
+\midrule
+Terrassa-Asymmetric              & 1609 & 55 & 3264 & budget-sensitive diagnostic \\
+Hessen-Asymmetric                & 4660 & 245 & 6674 & budget-sensitive diagnostic \\
+Austin                           & 7388 & 7388 & 18961 & budget-sensitive diagnostic \\
+Sydney                           & 33113 & 3264 & 75379 & budget-sensitive diagnostic \\
+
+solved
+====================================================================================================
+% --- the solved headline ---
+\newcommand{\NRHOCELLS}{75}
+\newcommand{\NNETS}{15}
+\newcommand{\NDISP}{five}
+\newcommand{\NSOLVED}{60}
+\newcommand{\NUNSOLVED}{zero}
+\newcommand{\NUNRESOLVED}{15}
+\newcommand{\NUNRESOLVEDNETS}{3}
+\newcommand{\NRELOADCELLS}{60}
+\newcommand{\NRELOADBIGGER}{50}
+\newcommand{\NSOLVEDWORST}{$9.8\times10^{-12}$}
+
+edsp
+====================================================================================================
+Sioux Falls                  & $252$--$264$ & 29.1--30.5\% & $0.113$--$0.142$ \\
+Eastern Massachusetts        & $222$--$246$ & 3.07--3.41\% & $0.0686$--$0.0958$ \\
+Berlin-Friedrichshain        & $358$--$371$ & 5.22--5.41\% & $0.144$ \\
+Berlin-Tiergarten            & $171$--$189$ & 1.48--1.63\% & $0.103$--$0.109$ \\
+Berlin-Mitte-Center          & $570$--$601$ & 3.12--3.29\% & $0.166$ \\
+Anaheim                      & $837$--$890$ & 4.59--4.88\% & $0.0567$--$0.0979$ \\
+
+rho
+====================================================================================================
+Braess example                   & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+Sioux Falls                      & 0.42 & 0.13 & 0.02 & 0.00 & 0.00 \\
+Eastern Massachusetts            & \(\mathbf{4.11}\) & \(\mathbf{3.80}\) & \(\mathbf{3.29}\) & \(\mathbf{2.40}\) & \(\mathbf{1.82}\) \\
+Berlin-Friedrichshain            & \(\mathbf{2.74}\) & \(\mathbf{2.71}\) & \(\mathbf{2.69}\) & \(\mathbf{2.68}\) & \(\mathbf{2.67}\) \\
+Berlin-Prenzlauerberg-Center     & \(\mathbf{3.02}\) & \(\mathbf{2.92}\) & \(\mathbf{2.86}\) & \(\mathbf{2.83}\) & \(\mathbf{2.83}\) \\
+Berlin-Tiergarten                & \(\mathbf{2.92}\) & \(\mathbf{2.78}\) & \(\mathbf{2.64}\) & \(\mathbf{2.50}\) & \(\mathbf{2.48}\) \\
+Berlin-Mitte-Center              & \(\mathbf{2.66}\) & \(\mathbf{2.63}\) & \(\mathbf{2.62}\) & \(\mathbf{2.61}\) & \(\mathbf{2.61}\) \\
+Anaheim                          & \(\mathbf{2.21}\) & \(\mathbf{1.74}\) & \(\mathbf{1.36}\) & 0.83 & 0.39 \\
+Berlin-M.-P.-F.-Center           & \(\mathbf{3.02}\) & \(\mathbf{2.92}\) & \(\mathbf{2.83}\) & \(\mathbf{2.78}\) & \(\mathbf{2.77}\) \\
+Winnipeg-Asymmetric              & \(\mathbf{1.60}\) & \(\mathbf{1.04}\) & 0.49 & 0.05 & 0.00 \\
+Chicago-Sketch                   & \(\mathbf{1.61}\) & \(\mathbf{1.27}\) & \(\mathbf{1.12}\) & \(\mathbf{1.02}\) & \(\mathbf{1.00}\) \\
+Terrassa-Asymmetric              & \(\mathbf{1.76}\) & \(\mathbf{1.21}\) & 0.57 & 0.06 & 0.00 \\
+Hessen-Asymmetric                & n.r. & n.r. & n.r. & n.r. & n.r. \\
+Austin                           & n.r. & n.r. & n.r. & n.r. & n.r. \\
+Sydney                           & n.r. & n.r. & n.r. & n.r. & n.r. \\
+% --- full-graph feasibility ---
+\newcommand{\NRHONETS}{12}
+\newcommand{\NRHORESOLVED}{60}
+\newcommand{\NRHOFAILNETS}{10}
+\newcommand{\NRHOFAILCELLS}{42}
+
+rho_examples
+====================================================================================================
+Sioux Falls                  & 0.13 & well defined \\
+Eastern Massachusetts        & 3.80 & global screen fails \\
+Anaheim                      & 1.74 & global screen fails \\
+Winnipeg-Asymmetric          & 1.04 & global screen fails \\
+Chicago-Sketch               & 1.27 & global screen fails \\
+Sydney                       & n.r. & not resolved \\
+
+comparison
+====================================================================================================
+Braess example               & 0.5--10 & 5 & $6.5\times10^{-7}$ & $1.5\times10^{-6}$ & -0.69 & 0.151 & --- \\
+Sioux Falls                  & 0.5--10 & 7 & $1.1\times10^{-1}$ & $1.6\times10^{-3}$ & 1.30 & 0.755 & $0.00643$--$0.136$ \\
+Anaheim                      & 5--10 & 2 & $7.1\times10^{-1}$ & $4.8\times10^{-1}$ & --- & --- & $1.66\times10^{-5}$ \\
+Winnipeg-Asymmetric          & 2--10 & 3 & $2.5\times10^{-1}$ & $2.2\times10^{-1}$ & 0.08 & 0.829 & --- \\
+Terrassa-Asymmetric          & 2--10 & 3 & $5.3\times10^{-1}$ & $4.4\times10^{-1}$ & 0.12 & 0.928 & --- \\
+
+accuracy
+====================================================================================================
+% --- the restricted/full-graph comparison ---
+\newcommand{\ACCNET}{Sioux Falls}
+\newcommand{\ACCLO}{1.1\times10^{-1}}
+\newcommand{\ACCHI}{1.6\times10^{-3}}
+\newcommand{\ACCMULO}{0.5}
+\newcommand{\ACCMUHI}{10}
+\newcommand{\ACCPOINTS}{7}
+
+witness
+====================================================================================================
+0.5 & 24 & 18 & 4095 & 0 \\
+1 & 24 & 18 & 4095 & 0 \\
+2 & 24 & 18 & 4095 & 0 \\
+3 & 24 & 18 & 4095 & 1 \\
+5 & 24 & 18 & 4095 & 1 \\
+10 & 24 & 18 & 4095 & 1 \\
+
+ties_a
+====================================================================================================
+Sioux Falls                  & $0.5$ & $0$ & --- & --- & $0.0925$ \\
+                             & $1$ & $0$ & --- & --- & $0.00751$ \\
+                             & $2$ & $0$ & --- & --- & $0.00645$ \\
+                             & $5$ & $0$ & --- & --- & $0.136$ \\
+                             & $10$ & $0$ & --- & --- & $0.0163$ \\
+\midrule
+Eastern Massachusetts        & $0.5$ & $0$ & --- & --- & $2.7\times10^{-4}$ \\
+                             & $1$ & $0$ & --- & --- & $1.1\times10^{-4}$ \\
+                             & $2$ & $0$ & --- & --- & $3.9\times10^{-5}$ \\
+                             & $5$ & $0$ & --- & --- & $4.5\times10^{-4}$ \\
+                             & $10$ & $0$ & --- & --- & $2.7\times10^{-4}$ \\
+\midrule
+Berlin-Friedrichshain        & $0.5$ & $69$ & 1.2 & $0.333$ & $0.0907$ \\
+                             & $1$ & $71$ & 1.3 & $0.333$ & $0.333$ \\
+                             & $2$ & $59$ & 1.1 & $0.333$ & $0.144$ \\
+                             & $5$ & $57$ & 1.1 & $0.333$ & $0.00705$ \\
+                             & $10$ & $57$ & 1.1 & $0.333$ & $0.133$ \\
+\midrule
+Berlin-Prenzlauerberg-Center & $0.5$ & $104$ & 1.3 & $0.333$ & $0.0216$ \\
+                             & $1$ & $100$ & 1.2 & $0.333$ & $0.0191$ \\
+                             & $2$ & $87$ & 1.1 & $0.333$ & $0.0176$ \\
+                             & $5$ & $87$ & 1.1 & $0.333$ & $0.0212$ \\
+                             & $10$ & $87$ & 1.1 & $0.333$ & $0.0254$ \\
+
+ties_b
+====================================================================================================
+Berlin-Tiergarten            & $0.5$ & $80$ & 1.1 & $0.333$ & $0.0393$ \\
+                             & $1$ & $84$ & 1.1 & $0.333$ & $9.5\times10^{-7}$ \\
+                             & $2$ & $75$ & 1.0 & $0.333$ & $1.0\times10^{-6}$ \\
+                             & $5$ & $75$ & 1.0 & $0.333$ & $1.0\times10^{-6}$ \\
+                             & $10$ & $75$ & 1.0 & $0.333$ & $1.0\times10^{-6}$ \\
+\midrule
+Berlin-Mitte-Center          & $0.5$ & $97$ & 1.0 & $0.335$ & $1.3\times10^{-6}$ \\
+                             & $1$ & $96$ & 1.0 & $0.334$ & $0.0249$ \\
+                             & $2$ & $97$ & 1.0 & $0.334$ & $0.0206$ \\
+                             & $5$ & $97$ & 1.0 & $0.333$ & $0.016$ \\
+                             & $10$ & $97$ & 1.0 & $0.333$ & $0.021$ \\
+\midrule
+Anaheim                      & $0.5$ & $115$ & 7.2 & $0.333$ & $4.6\times10^{-5}$ \\
+                             & $1$ & $115$ & 7.2 & $0.296$ & $5.7\times10^{-5}$ \\
+                             & $2$ & $60$ & 6.0 & $0.149$ & $7.7\times10^{-5}$ \\
+                             & $5$ & $0$ & --- & --- & $8.7\times10^{-5}$ \\
+                             & $10$ & $11$ & 11.0 & $0.149$ & $1.0\times10^{-4}$ \\
+\midrule
+Chicago-Sketch               & $1$ & $1574$ & 27.1 & $0.411$ & $6.1\times10^{-5}$ \\
+                             & $2$ & $492$ & 24.6 & $0.406$ & $2.8\times10^{-5}$ \\
+                             & $5$ & $0$ & --- & --- & $3.4\times10^{-4}$ \\
+                             & $10$ & $0$ & --- & --- & $1.4\times10^{-4}$ \\
+% --- the certificate tier ---
+\newcommand{\NCERTTOTAL}{39}
+\newcommand{\NCERTPASS}{39}
+\newcommand{\NCERTNETS}{8}
+
+timing
+====================================================================================================
+Sioux Falls                      & $76$ & $1961$ & $0.977$ & $0.0183$ & $1.1\times10^{-13}$ \\
+Eastern Massachusetts            & $258$ & $321$ & $0.505$ & $0.0553$ & $3.7\times10^{-16}$ \\
+Berlin-Tiergarten                & $766$ & $961$ & $1.29$ & $0.0218$ & $9.2\times10^{-14}$ \\
+Berlin-Mitte-Center              & $871$ & $2371$ & $4.9$ & $0.0339$ & $4.4\times10^{-13}$ \\
+Anaheim                          & $914$ & $1681$ & $3.58$ & $0.0349$ & $8.5\times10^{-13}$ \\
+Berlin-M.-P.-F.-Center           & $2184$ & $3451$ & $38.9$ & $0.247$ & $2.2\times10^{-15}$ \\
+Winnipeg-Asymmetric              & $2535$ & $263551$ & $3.95\times10^{3}$ & $2.1$ & $5.7\times10^{-15}$ \\
+Chicago-Sketch                   & $2950$ & $6741$ & $406$ & $2.58$ & $4.5\times10^{-12}$ \\
+Terrassa-Asymmetric              & $3264$ & $402461$ & $3.26\times10^{3}$ & $2.55$ & $6.1\times10^{-12}$ \\
+% --- timing conditions ---
+\newcommand{\NCLOCKCELLS}{45}
+\newcommand{\TCORES}{76}
+\newcommand{\TLOAD}{0.10}
+
+certification
+====================================================================================================
+% --- certification cost ---
+\newcommand{\TCHECKLO}{2.4}
+\newcommand{\TCHECKHI}{7.1\times10^{2}}
+\newcommand{\TFEASLO}{0.92}
+\newcommand{\TFEASHI}{3.6\times10^{4}}
+\newcommand{\NFEASCELLS}{39}
+\newcommand{\NANSCELLS}{19}
+\newcommand{\NTIEFREE}{13}
+\newcommand{\TFACEHI}{10.0}
+\newcommand{\TFACENET}{Chicago-Sketch}
+\newcommand{\TFACEMU}{1}
+
+walk
+====================================================================================================
+% --- walk instrumentation ---
+\newcommand{\WALKNETA}{Sioux Falls}
+\newcommand{\WALKMUA}{0.5}
+\newcommand{\WALKLIVEA}{16}
+\newcommand{\WALKPIVOTSA}{0}
+\newcommand{\WALKCROSSA}{0}
+\newcommand{\WALKSETA}{16}
+\newcommand{\WALKWEIGHTSA}{16}
+\newcommand{\WALKBOUNDA}{3648}
+\newcommand{\WALKNETB}{Eastern Massachusetts}
+\newcommand{\WALKMUB}{2}
+\newcommand{\WALKLIVEB}{66}
+\newcommand{\WALKPIVOTSB}{0}
+\newcommand{\WALKCROSSB}{0}
+\newcommand{\WALKSETB}{66}
+\newcommand{\WALKWEIGHTSB}{66}
+\newcommand{\WALKBOUNDB}{38184}
+
+face
+====================================================================================================
+
+uniqueness
+====================================================================================================
+% --- the solution set ---
+\newcommand{\NUNIQUECELLS}{3}
+\newcommand{\NDIAMCELLS}{39}
+\newcommand{\SETWIDTH}{5.5\times10^{-2}}

@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "endogenous-sue"
+version = "1.0.0"
+description = "Stochastic user equilibrium with endogenous efficient subnetworks"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Yue Li" }]
+keywords = [
+    "traffic assignment",
+    "stochastic user equilibrium",
+    "recursive logit",
+    "efficient subnetwork",
+    "equilibrium certificate",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.7",
+]
+
+[project.optional-dependencies]
+# numba is optional throughout: every compiled kernel has a pure-Python counterpart with identical
+# semantics, so the package runs without it and only the speed changes.
+fast = ["numba>=0.56"]
+figures = ["matplotlib>=3.5"]
+dev = ["pytest>=7", "ruff>=0.1"]
+
+[project.urls]
+Repository = "https://github.com/yueli901/endogenous-sue"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["endogenous_sue*"]
+
+[tool.ruff]
+line-length = 108
+target-version = "py39"
+extend-exclude = ["archive"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# The exhibit and tool scripts put the checkout on sys.path before importing the package, so that they
+# run from a clone nobody has pip-installed. Every import after that line is E402 by construction.
+"reproduction/*" = ["E402"]
+# The two hot kernels keep an index update and its guard on one line on purpose: the loop body is meant
+# to read as a single step. Splitting them would make the inner loop harder to check, not easier.
+"src/endogenous_sue/shortestpath.py" = ["E702"]
+"src/endogenous_sue/subnetwork.py" = ["E702"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

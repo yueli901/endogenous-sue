@@ -1,0 +1,63 @@
+# This repository is the code and data artifact for the paper. It carries the method, the scripts that
+# produce every reported exhibit, and the result records those scripts wrote. Working material that a
+# reader does not need in order to run, check or cite the work is kept out.
+
+# --- Not part of the artifact ---------------------------------------------------------------------
+# The paper source, its figures, proofs and correspondence. The manuscript is distributed through the
+# journal; the Data availability statement promises the solver, scripts and results, which are here.
+manuscript/
+meetings/
+
+# Working notes. Not part of the artifact.
+LOG.md
+CHANGES.md
+TODO.md
+CLAUDE.md
+HANDOFF.md
+.claude/
+
+# Site-specific deployment state. reproduction/cluster/README.md documents what a site must supply.
+reproduction/cluster/STATUS.md
+
+# Superseded results and earlier pivots. Not safe to read beside current results.
+archive/
+
+# --- Excluded by size or licence ------------------------------------------------------------------
+# 463 MB, not ours to redistribute, and holds a 197 MB file GitHub refuses outright. Fetched at a pinned
+# commit by reproduction/tools/fetch_networks.py.
+data/TransportationNetworks/
+
+# Publisher copies obtained through institutional access.
+manuscript/references/*.pdf
+
+# --- Generated ------------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+.venv/
+.DS_Store
+.vscode/
+.idea/
+*.before_*
+
+# LaTeX intermediates.
+*.log
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.spl
+*.synctex.gz
+*.toc
+
+# Written by `make reproduce`: a demonstration that the pipeline runs, not a result.
+results/smoke/
+results/pilot/
+# Machine-specific, not a result: reproduction/tools/record_provenance.py writes the reader's own.
+results/provenance/

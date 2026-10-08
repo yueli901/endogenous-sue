@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: If you use this software, please cite the paper below.
+title: "endogenous-sue: a reference implementation of ES-SUE"
+abbreviation: ES-SUE
+repository-code: "https://github.com/yueli901/endogenous-sue"
+version: 1.0.0
+license: MIT
+date-released: 2026-09-24
+keywords:
+  - traffic assignment
+  - stochastic user equilibrium
+  - recursive logit
+  - efficient subnetwork
+  - equilibrium certificate
+authors:
+  - family-names: Li
+    given-names: Yue
+    affiliation: "Department of Architecture, University of Cambridge"
+  - family-names: Chen
+    given-names: Shujuan
+  - family-names: Tang
+    given-names: Yushi
+  - family-names: Jin
+    given-names: Ying
+    affiliation: "Department of Architecture, University of Cambridge"
+preferred-citation:
+  type: article
+  title: "Stochastic User Equilibrium with Endogenous Efficient Subnetworks"
+  journal: "Transportation Research Part B: Methodological"
+  year: 2026
+  authors:
+    - family-names: Li
+      given-names: Yue
+    - family-names: Chen
+      given-names: Shujuan
+    - family-names: Tang
+      given-names: Yushi
+    - family-names: Jin
+      given-names: Ying

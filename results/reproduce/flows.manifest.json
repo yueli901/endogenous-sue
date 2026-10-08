@@ -1,0 +1,161 @@
+{
+ "directory": "flows",
+ "files": {
+  "Anaheim_mu0.5.npz": {
+   "sha256": "9d72735aca18cc4c",
+   "bytes": 6109
+  },
+  "Anaheim_mu1.npz": {
+   "sha256": "5828157001b12b7c",
+   "bytes": 6118
+  },
+  "Anaheim_mu10.npz": {
+   "sha256": "ea3dd3fc77980d32",
+   "bytes": 6142
+  },
+  "Anaheim_mu2.npz": {
+   "sha256": "5fb845767019d220",
+   "bytes": 6137
+  },
+  "Anaheim_mu5.npz": {
+   "sha256": "c8e8b778ab9a68a1",
+   "bytes": 6156
+  },
+  "Berlin-Friedrichshain_mu0.5.npz": {
+   "sha256": "9b1c2087a9f4e765",
+   "bytes": 3308
+  },
+  "Berlin-Friedrichshain_mu1.npz": {
+   "sha256": "b94dda0290f1a0e7",
+   "bytes": 3296
+  },
+  "Berlin-Friedrichshain_mu10.npz": {
+   "sha256": "76f032c3adfb3db8",
+   "bytes": 2896
+  },
+  "Berlin-Friedrichshain_mu2.npz": {
+   "sha256": "0f8335552483d2cc",
+   "bytes": 3226
+  },
+  "Berlin-Friedrichshain_mu5.npz": {
+   "sha256": "31bc322f9d19f639",
+   "bytes": 3038
+  },
+  "Berlin-Mitte-Center_mu0.5.npz": {
+   "sha256": "e319fa355cb6cf9b",
+   "bytes": 5041
+  },
+  "Berlin-Mitte-Center_mu1.npz": {
+   "sha256": "28547c9a6943cd49",
+   "bytes": 5039
+  },
+  "Berlin-Mitte-Center_mu10.npz": {
+   "sha256": "10f71da4799563a5",
+   "bytes": 4752
+  },
+  "Berlin-Mitte-Center_mu2.npz": {
+   "sha256": "007e7afea6d3bff1",
+   "bytes": 5000
+  },
+  "Berlin-Mitte-Center_mu5.npz": {
+   "sha256": "2ff06b269e1080d0",
+   "bytes": 4880
+  },
+  "Berlin-Prenzlauerberg-Center_mu0.5.npz": {
+   "sha256": "0bc09b737b753b23",
+   "bytes": 4563
+  },
+  "Berlin-Prenzlauerberg-Center_mu1.npz": {
+   "sha256": "7ac815732690fb85",
+   "bytes": 4549
+  },
+  "Berlin-Prenzlauerberg-Center_mu10.npz": {
+   "sha256": "d7b24224eb443f5c",
+   "bytes": 4145
+  },
+  "Berlin-Prenzlauerberg-Center_mu2.npz": {
+   "sha256": "b628cc7c80212f3e",
+   "bytes": 4489
+  },
+  "Berlin-Prenzlauerberg-Center_mu5.npz": {
+   "sha256": "75b2b5de3f702445",
+   "bytes": 4321
+  },
+  "Berlin-Tiergarten_mu0.5.npz": {
+   "sha256": "64fd041381f1252f",
+   "bytes": 4344
+  },
+  "Berlin-Tiergarten_mu1.npz": {
+   "sha256": "0676ec7aa49a98e7",
+   "bytes": 4330
+  },
+  "Berlin-Tiergarten_mu10.npz": {
+   "sha256": "5e3972cde5b9a175",
+   "bytes": 3940
+  },
+  "Berlin-Tiergarten_mu2.npz": {
+   "sha256": "25c4a304ecb92b0b",
+   "bytes": 4269
+  },
+  "Berlin-Tiergarten_mu5.npz": {
+   "sha256": "cd0e923be4c1ac23",
+   "bytes": 4126
+  },
+  "Chicago-Sketch_mu1.npz": {
+   "sha256": "84fb24d9c1c46381",
+   "bytes": 20676
+  },
+  "Chicago-Sketch_mu10.npz": {
+   "sha256": "e5545d739e7e0b3e",
+   "bytes": 20894
+  },
+  "Chicago-Sketch_mu2.npz": {
+   "sha256": "73a55d5c443fffd9",
+   "bytes": 20745
+  },
+  "Chicago-Sketch_mu5.npz": {
+   "sha256": "deea9bcb566e5d52",
+   "bytes": 21152
+  },
+  "Eastern-Massachusetts_mu0.5.npz": {
+   "sha256": "6cec87f418fbba22",
+   "bytes": 2026
+  },
+  "Eastern-Massachusetts_mu1.npz": {
+   "sha256": "3b14035487c54f39",
+   "bytes": 2028
+  },
+  "Eastern-Massachusetts_mu10.npz": {
+   "sha256": "266b350f608297eb",
+   "bytes": 2021
+  },
+  "Eastern-Massachusetts_mu2.npz": {
+   "sha256": "ff6bea3385edfb8e",
+   "bytes": 2024
+  },
+  "Eastern-Massachusetts_mu5.npz": {
+   "sha256": "a83204a8883705cb",
+   "bytes": 2023
+  },
+  "SiouxFalls_mu0.5.npz": {
+   "sha256": "875ca406db8a97b2",
+   "bytes": 824
+  },
+  "SiouxFalls_mu1.npz": {
+   "sha256": "7cd1534f9968cc93",
+   "bytes": 823
+  },
+  "SiouxFalls_mu10.npz": {
+   "sha256": "5f889e5c5cc8bd5e",
+   "bytes": 812
+  },
+  "SiouxFalls_mu2.npz": {
+   "sha256": "410cf1e666369243",
+   "bytes": 829
+  },
+  "SiouxFalls_mu5.npz": {
+   "sha256": "d885337b724778da",
+   "bytes": 823
+  }
+ }
+}

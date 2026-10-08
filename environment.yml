@@ -1,0 +1,27 @@
+# The declared environment, not a lockfile of the reported runs.
+#
+# The result records carry the Python version and the platform of the machine that produced them
+# (3.9.12 on Linux for every reported row) but not the versions of numpy and scipy, so pinning those
+# here to exact values would be a guess dressed as provenance. What is pinned is what the package
+# declares it needs; `python reproduction/tools/record_provenance.py` writes the reader's own resolved
+# versions into results/provenance/software_versions.txt.
+#
+#   conda env create -f environment.yml && conda activate endogenous-sue
+#   python -m pip install -e ".[fast,figures,dev]"
+
+name: endogenous-sue
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.9
+  - numpy>=1.21
+  - scipy>=1.7
+  # Optional. Every compiled kernel has a pure-Python counterpart with identical semantics, so the
+  # package runs without numba and only the speed changes.
+  - numba>=0.56
+  - matplotlib>=3.5
+  - pytest>=7
+  - ruff>=0.1
+  - pip
