@@ -38,20 +38,35 @@ class whose gaps disagree. Correctness never depends on the collapse being globa
 only part of the manuscript grid. `reproduction/tools/validate_results.py` reports partial coverage rather than
 letting it read as complete.
 
+**The two Phase-1 stopping guarantees are conditional, and on different things.** Support
+identification stops on one of two criteria, and neither is an unconditional convergence guarantee.
+*Support recurrence*: the support is unchanged across `support_window` consecutive rebuilds. This is a
+stability observation, not a proof that it will not move again. *The exactness bound*: when the smallest
+potential gap over every still-eligible link exceeds what the remaining cost movement could close, no
+efficiency gap can change sign and the support is final from that point. `equilibrium.py` records which
+of the two fired in `stopped_on`. The finite-time freezing result behind the first applies when the
+equilibrium sits off the tie boundary by a margin large enough relative to the averaging band; the paper
+states the condition. A run that exhausts its budget before either criterion fires is recorded as
+unconverged and is not a result.
+
 ## In the stored results
 
 These are properties of the deposited files, not of the code. Each is reported by
 `reproduction/tools/validate_results.py` or by the table generators; none is silently carried into a number.
 
-**The tracked results are currently a smoke artifact, not the manuscript sweep.** The repository contains
-the witness enumeration, two one-cell support comparisons, two one-cell corpus rows, and one one-cell
-certificate row. It does not yet contain the canonical `full_graph`, `convergence`, or `solution_set`
-sinks. The validator reports those absences, and the figure builder exits non-zero when asked to draw a
-manuscript figure whose sink is missing.
+**The deposited results are the reported sweep.** `results/reproduce/` carries the corpus sweep (75
+records), the certificate sweep (39), the full-graph comparison (77), the solution-set sweep (39), the
+support comparison (24), the timing and convergence subset (45) and the witness enumeration (150);
+`results/held_out/` carries the 19 recorded cells of the prospective run. The validator checks each sink
+against the coverage `config.py` declares, so a partial sweep is reported as partial rather than read as
+complete.
 
-**Old rows written before the flow digest field cannot authenticate their arrays.** Certificate rows
-written from now on carry `flow_file`, `flow_bytes` and `flow_sha256`. Rows already in the smoke artifact
-name the flow array but have no digest, so the validator reports that limitation until they are rerun.
+**The `commit` field is null in every deposited record.** `provenance.commit()` reads the revision
+with `git rev-parse` and returns `None` rather than guessing when that fails. The reported runs executed
+on a cluster tree deployed by file copy with no `.git` directory, so the field is recorded as null
+throughout. Every other provenance field — package version, platform, timestamp, resolved run arguments,
+gate revision and the full solver settings — is present on all 468 records, and all 39 certificate rows
+carry `flow_file`, `flow_bytes` and `flow_sha256`.
 
 ## The certified flows are sidecar artifacts
 

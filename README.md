@@ -1,154 +1,169 @@
-# ES-SUE — stochastic user equilibrium with endogenous efficient subnetworks
+# ES-SUE: Stochastic User Equilibrium with Endogenous Efficient Subnetworks
 
-Reference implementation and reproduction artifact for the paper
-**"Stochastic User Equilibrium with Endogenous Efficient Subnetworks: Existence, Computation, and
-Certification."**
+Reference implementation and reproduction repository for *Stochastic User Equilibrium with Endogenous Efficient Subnetworks: Existence, Computation, and Certification*.
 
-Dial's efficient subnetwork — the arcs along which the cost to a destination strictly decreases — is
-usually taken as given, or built once from free-flow costs and held fixed. Under congestion it is
-neither: it is a function of the flow, and where two routes tie it is **set-valued**. This code solves
-the equilibrium that follows, and **certifies** the answer rather than asserting it.
+Dial's efficient subnetwork contains links along which the cost-to-destination potential strictly decreases. In congested assignment, this subnetwork can change as link costs change. When ordinary links have equal endpoint potentials, their inclusion can also be set-valued, subject to the requirement that each support remains acyclic and feasible for the demand.
 
-```python
-from endogenous_sue import corpus, solve
-
-net, od = corpus.load("SiouxFalls")
-equilibrium = solve(net, od, mu=1.0)
-equilibrium.x          # link flows
-equilibrium.residual   # measured against the support the solver froze -- see below
-```
-
----
+ES-SUE studies the resulting equilibrium problem. It provides a two-phase computational method, a search procedure for support mixtures, and an independent certificate that checks candidate flows against the equilibrium definition. A small residual from a fixed-support solve is not, by itself, evidence of equilibrium.
 
 ## Quick start
 
+Install the package and its optional acceleration, plotting and development dependencies.
+
 ```sh
-python -m pip install -e ".[fast,figures,dev]"   # install
-python reproduction/tools/fetch_networks.py      # benchmark networks, at a pinned commit
-python tests/run_tests.py                        # 110 tests, a few minutes
+python -m pip install -e ".[fast,figures,dev]"
 ```
 
-Then reproduce something small and rebuild the paper's tables from the stored records:
+Fetch the benchmark networks, then run the tests.
 
 ```sh
-make reproduce                                       # the exhibits that finish in minutes
+python reproduction/tools/fetch_networks.py
+python tests/run_tests.py
+```
+
+Reproduce the exhibits that fit within a few minutes, validate the stored results, and rebuild the paper's tables.
+
+```sh
+make reproduce
 python reproduction/tools/validate_results.py --strict
 python reproduction/tools/build_tables.py
 ```
 
-`numba` is optional. Every compiled kernel has a pure-Python counterpart with identical semantics, so
-the package runs without it and only the speed changes — the test suite runs both ways in CI.
+The reproduction scripts document the computational requirements of individual exhibits. Some larger runs exceed the available computational budget and do not produce certified equilibria.
 
-## What is here
+`numba` is optional. When it is unavailable, the package can use pure-Python implementations of the compiled kernels. The test suite and continuous-integration configuration cover the supported execution paths.
 
+## Repository structure
+
+```text
+src/endogenous_sue/       Model, solver and certificate
+  config                  Solver settings and experiment configuration
+  tntp, corpus            Benchmark network readers and corpus definitions
+  network, costs          Network representation and link costs
+  shortestpath            Cost-to-destination potentials
+  subnetwork              Efficient-support construction
+  loading                 Recursive-logit loading on acyclic supports
+  equilibrium             Two-phase solver and support-mixture search
+  certificate             Independent equilibrium checks
+  witness                 Five-node non-existence witness
+  tied/                   Support ties, mixture atoms and face search
+
+reproduction/
+  exhibits/               Scripts for the paper's exhibits
+  tools/                  Data retrieval, result validation and table building
+  cluster/                Slurm scripts for computational sweeps
+
+results/
+  reproduce/              Stored records for the reported experiments
+  held_out/               Records for the prospective run on reserved networks
+  tables/                 Generated LaTeX tables and numerical macros
+  figures/                Figures used in the paper
+
+tests/                    Test suite
+docs/                     Data sources, result schema and limitations
+data/                     Supporting data and files
 ```
-src/endogenous_sue/   the method
-  config                every setting, tolerance and corpus constant, in one file
-  tntp, corpus          reading benchmark networks, and the study's network list
-  network, costs        per-network arrays, adjacency, and the link cost
-  shortestpath          cost-to-destination potentials
-  subnetwork            which links are efficient, and in what order
-  loading               recursive-logit loading on an acyclic support
-  equilibrium           the two-phase solver, and the inclusion scheme
-  certificate           testing a returned flow against the definition
-  witness               the five-node network on which no strict equilibrium exists
-  tied/                 the set-valued case: contested links, atoms, faces, the guaranteed branch
 
-reproduction/         everything that regenerates the paper
-  exhibits/             one script per exhibit, named for what it produces
-  tools/                fetch data, validate results, build tables and figures
-  cluster/              the Slurm scripts the long sweeps were dispatched with
+See `reproduction/README.md` for the commands and computational requirements associated with each exhibit. See `docs/known_limitations.md` for the conditions under which the method and its results should be interpreted.
 
-results/              everything the paper reports
-  reproduce/            the canonical sweep, one record per cell
-  held_out/             a prospective run on networks the method was not developed against
-  tables/               the generated LaTeX table bodies and numeric macros
-  figures/              the paper's figures, as included
+## Model and solver
 
-tests/  docs/  data/
-```
+### The equilibrium problem
 
-Every setting lives in `src/endogenous_sue/config.py`. No tolerance, budget, threshold, grid or corpus
-membership is defined anywhere else, and nothing is read from the environment, so a result cannot depend
-on a shell. `config.py` also declares what each exhibit runs, so a sweep cannot quietly cover a different
-set of networks from the one the tables report.
+In a fixed-support stochastic user equilibrium, recursive-logit loading takes place on a specified collection of acyclic, destination-specific supports. In an endogenous-support equilibrium, the supports must also be admissible under the costs generated by the resulting flow.
 
-## How the method works
+These requirements need not be satisfied by a single strict support. At an eligibility tie, the relaxed formulation permits a convex combination of recursive-logit loadings over admissible support resolutions. The mixture must still reproduce the returned flow at its own realised cost.
 
-**Phase 1** builds the support from a running average of the congested cost while loading at the current
-cost. Averaging the cost that *defines* the support is what stabilises the efficiency boundary: the
-support stops changing and freezes in finite time whenever the equilibrium is off the tie boundary.
-Rebuilding it from the instantaneous cost instead makes the map discontinuous and the support oscillates
-indefinitely — that contrast is one of the paper's exhibits, measured by
-`reproduction/exhibits/convergence.py`.
+### Phase 1: Support identification
 
-Phase 1 does not stop on an iteration count. Its job is to freeze the support, not to converge the flow.
-It stops when the support is unchanged across several consecutive rebuilds, or earlier when the exactness
-bound certifies that no efficiency gap can still change sign. The iteration limits in `config.py` mark a
-run unconverged; they never define an answer.
+Phase 1 updates the efficient supports using a running average of congested costs while loading is evaluated at the current costs. Averaging the costs used to determine support is intended to reduce support oscillation during identification.
 
-**Phase 2** holds the frozen support fixed and solves the now-smooth fixed point to machine precision.
+Under the conditions stated in the paper, including a positive gap from the eligibility boundary large enough relative to the hysteresis band, support identification stabilises in finite time. This is a conditional result, not a general guarantee for every run.
 
-Where the support is genuinely set-valued the equilibrium is a **mixture**, and `tied/` finds one. A
-guaranteed simplicial branch sits underneath the whole search: the accelerators above it inherit its
-guarantee and never replace it.
+Phase 1 identifies a support; it does not establish that the resulting flow is an equilibrium. The implementation monitors support stability and applies its configured stopping criteria. If an iteration or computational budget is exhausted, the run is reported as incomplete rather than as a converged solution.
 
-## Why the certificate matters
+The contrast with rebuilding supports from instantaneous costs is examined in `reproduction/exhibits/convergence.py`.
 
-A small residual is not an equilibrium. The two-phase solver reports its residual against the support it
-*froze*; the model is defined against the support the flow's own cost *induces*. Those differ, and the
-gap is not small:
+### Phase 2: Fixed-support solve and tie resolution
+
+Phase 2 solves the fixed-point problem on the identified support. A small residual here establishes agreement with that fixed-support problem, not necessarily with the endogenous-support equilibrium definition.
+
+Where support inclusion is set-valued, the solver also searches for admissible support mixtures. The nested-support parameterisation and simplicial face search are computational search strategies, not general guarantees that a valid mixture will be found. Candidate mixtures are checked against the original relaxed-equilibrium definition.
+
+## Why independent certification matters
+
+The equilibrium definition depends on the support induced by the returned flow's own cost. A solver can therefore report a small residual on its frozen support while the returned flow fails the endogenous-support equilibrium conditions.
+
+For example, the following call checks a flow as a strict equilibrium, without supplying a support mixture.
 
 ```python
+from endogenous_sue import corpus, solve
 from endogenous_sue.certificate import certify
 
-# Omitting the mixture tests the flow as a strict equilibrium against the supports its own cost
-# induces. On many cells a two-phase solve alone does not pass this -- which is the point.
-certify(net, od, 1.0, equilibrium.x).certified
+net, od = corpus.load("SiouxFalls")
+equilibrium = solve(net, od, mu=1.0)
+
+print(equilibrium.residual)  # Residual on the solver's frozen support
+
+strict_check = certify(net, od, 1.0, equilibrium.x)
+print(strict_check.certified)
 ```
 
-Among the converged candidates in the reported sweep, most have a frozen-support residual below `1e-8`
-while failing a reload on the support induced by their returned cost. Passing those cells needs the
-tied-face solve, which returns the mixture that `certify` then checks.
+A failed strict check does not, by itself, imply that the flow cannot be part of a relaxed equilibrium. When a mixture is required, it is passed as the fifth argument: a list of `(destination, support_mask, weight)` entries, where `support_mask` is a boolean array over links and the weights for each destination sum to one. `reproduction/exhibits/certificate_sweep.py` reconstructs one from a stored record and is the reference consumer.
 
-`certify` takes the network, demand, dispersion, flow and mixture — and **nothing from the solver** —
-then checks support admissibility, the mixture reconstruction, tie weights and demand conservation.
-`conservation_error` and `reload_on_own_support` expose the two underlying questions separately: does
-the flow carry the demand, and is it the loading on its own support?
+The certificate is independent of the solver's internal residual. It checks the returned candidate against the equilibrium conditions, including:
+
+* **Support admissibility:** every positive-weight support satisfies the efficient-support conditions at the returned cost.
+* **Mixture consistency:** the weighted recursive-logit loadings reconstruct the candidate flow.
+* **Demand conservation:** the reconstructed flow satisfies the required conservation conditions.
+
+The conservation diagnostic and the loading-on-own-support checks expose different potential problems. Neither should be replaced by a small frozen-support residual.
+
+In the reported computational sweep, many candidates have frozen-support residuals below `1e-8` but do not pass the corresponding endogenous-support checks. Certification is therefore part of the method's output assessment, not just a post-processing statistic.
 
 ## Results and provenance
 
-`results/` holds one record per cell. Every record carries the package version, the commit, the
-platform, the timestamp, the resolved run arguments, the gate revision and the full solver settings it
-was produced under. A record naming a stored flow also carries that file's digest.
+The `results/` directory stores records for the reported experiments. Records include run configuration and provenance information: the package version, platform, timestamp, resolved run arguments, gate revision and the full solver settings. Where a record refers to a stored flow, it also records that file's digest. The schema carries a `commit` field as well, but it is null on every deposited record, because the reported runs executed on a cluster tree deployed by file copy with no git metadata; `docs/result_schema.md` defines every field and `docs/known_limitations.md` explains the gap.
 
-`reproduction/tools/validate_results.py --strict` checks all of it before any number is read off the
-files. It refuses a file that mixes gate revisions or settings, reports partial coverage rather than
-letting it read as complete, and names any record that stopped on an iteration limit instead of
-converging.
+Run the strict validator before rebuilding the paper's tables.
 
-## Scope
+```sh
+python reproduction/tools/validate_results.py --strict
+python reproduction/tools/build_tables.py
+```
 
-The method is an equilibrium formulation and certification framework with an efficient fixed-support
-loading primitive. It is **not** a general-purpose fast solver for large networks: on the larger
-benchmark networks the implementation does not reach certification within its declared computational
-budget, usually because the support is still changing when the budget expires. `docs/known_limitations.md`
-is specific about what does and does not hold.
+The validator checks result consistency and reports incomplete coverage and runs that stopped at computational limits. A partial sweep should not be interpreted as complete, and a run without a certified candidate should not be reported as a certified equilibrium.
+
+The generated tables and figures are stored under `results/tables/` and `results/figures/`. The reproduction scripts specify which stored records contribute to each exhibit.
+
+## Scope and limitations
+
+ES-SUE is an equilibrium formulation and certification framework built around recursive-logit loading on acyclic, destination-specific supports. It is not a general-purpose fast solver for large networks.
+
+On some larger benchmark networks, support identification or tie resolution does not finish within the declared computational budget, and the implementation does not obtain a certified equilibrium. Such outcomes describe the computational limits of the current implementation; they do not establish non-existence of an equilibrium.
+
+The paper's non-existence result is established by a finite witness network. Conversely, failure to find or certify an equilibrium on another network is not a non-existence result.
+
+The full-graph comparison is empirical and is performed only where the relevant global spectral feasibility screen permits it. It is not an approximation-rate guarantee.
+
+See [`docs/known_limitations.md`](docs/known_limitations.md) for details on the solver's guarantees, search procedures, computational budgets and unresolved limitations.
 
 ## Documentation
 
-| | |
-|---|---|
-| [docs/](docs/) | result schema, data sources, the solved-face contract, known limitations, the held-out protocol |
-| [reproduction/README.md](reproduction/README.md) | how to run every exhibit, and what each costs |
-| [CHANGELOG.md](CHANGELOG.md) | release history |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | reporting a bug, opening a pull request |
+| Resource                                           | Contents                                                                        |
+| -------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [`docs/`](docs/)                                   | Result schema, data sources, support-mixture requirements and known limitations |
+| [`reproduction/README.md`](reproduction/README.md) | Instructions and computational requirements for reproducing each exhibit        |
+| [`CHANGELOG.md`](CHANGELOG.md)                     | Release history                                                                 |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md)               | Bug reports and contributions                                                   |
+| [`CITATION.cff`](CITATION.cff)                     | Citation metadata                                                               |
 
 ## Citing
 
-See [CITATION.cff](CITATION.cff).
+See [`CITATION.cff`](CITATION.cff) for the recommended citation.
 
-## Licence
+## Licence and data
 
-MIT, see [LICENSE](LICENSE). The benchmark networks are not ours and are not redistributed; see
-[docs/data_sources.md](docs/data_sources.md).
+The code is released under the MIT Licence. See [`LICENSE`](LICENSE).
+
+Benchmark networks are third-party data and are not redistributed by this repository. Their sources and access instructions are documented in [`docs/data_sources.md`](docs/data_sources.md).
