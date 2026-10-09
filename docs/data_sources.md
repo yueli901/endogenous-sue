@@ -44,7 +44,10 @@ the tolerance any reported total could absorb.
 
 `python reproduction/tools/corpus_verdicts.py` runs the same gate over every network the collection offers and prints
 the verdict with the values behind it. Run it with `--check` to have it exit non-zero wherever the gate
-and the declared corpus disagree. As of the last run three networks -- Berlin-Center, Philadelphia and
-chicago-regional -- are admitted by the gate and absent from the corpus, which is a scope decision made by
-omission rather than by a stated criterion. That is recorded here rather than hidden: either a criterion
-that excludes them belongs in this file, or they belong in the corpus.
+and the declared corpus disagree. Berlin-Center, Philadelphia and chicago-regional are admitted by the
+gate and are deliberately outside the reported corpus: they are declared in
+`endogenous_sue.config.HELD_OUT_NETWORKS` and reserved for the prospective evaluation that
+`docs/held_out_protocol.md` specifies. The gate knows about that reservation and reports them as held
+out rather than as a disagreement, so the scope decision is a stated criterion and not an omission.
+Munich is declared with them and is reported as unreadable, because its network and demand files
+disagree on the zone count.

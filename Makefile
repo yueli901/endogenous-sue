@@ -58,8 +58,13 @@ validate:
 # a table cannot be built from a result set that does not exist or from a run that did not converge.
 validate-strict:
 	$(PYTHON) reproduction/tools/validate_results.py --strict
-	$(PYTHON) reproduction/tools/splice_tables.py --check \
-		--tex manuscript/submission/main.tex --tex manuscript/submission/supplement.tex
+	@# The splice check needs the paper source, which is not part of the released repository.
+	@if [ -f manuscript/submission/main.tex ]; then \
+		$(PYTHON) reproduction/tools/splice_tables.py --check \
+			--tex manuscript/submission/main.tex --tex manuscript/submission/supplement.tex; \
+	else \
+		echo "table-coverage check skipped: no manuscript source in this checkout"; \
+	fi
 
 provenance:
 	$(PYTHON) reproduction/tools/record_provenance.py

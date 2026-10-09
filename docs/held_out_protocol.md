@@ -3,6 +3,17 @@
 Written before the run, and fixed once written. Anything decided after seeing a result is not part of
 this protocol and must be reported as a separate, post hoc analysis.
 
+> **Note added for the public release, 2026-10-09. The protocol text below is unchanged.** Three of its
+> references do not resolve in this repository, and the document is left as written rather than edited,
+> because a pre-registration that is revised after the fact is no longer evidence of anything.
+> The frozen revision `24ea33e` named in section 1 belonged to a history that was re-initialised before
+> release, so that hash is not reachable here. `reproduction/cluster/STATUS.md` and `archive/`, cited in
+> sections 1 and 9, are working material and are not part of the released repository. The test suite was
+> 109 tests at that revision and is 110 now; the test named in section 1,
+> `tests/test_declarations.test_the_held_out_protocol_holds_on_this_revision`, is present and still
+> asserts the clauses of sections 2, 4 and 5 against the code. The run's outcomes are in
+> `results/held_out/`.
+
 The question is narrow and worth stating plainly, because the certificate tier does not answer it. The
 tier establishes that the flows it certified are relaxed equilibria of the model. It was also the corpus
 the solver was developed against: defects were found and repaired while those cells were being run, and
